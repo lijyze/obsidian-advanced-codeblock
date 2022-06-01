@@ -1,14 +1,7 @@
 import { Editor, Plugin } from "obsidian";
 import { commonCodeblockPostProcessor } from "./postProcessor";
 
-// Remember to rename these classes and interfaces!
-
-interface MyPluginSettings {
-	mySetting: string;
-}
-
 export default class MyPlugin extends Plugin {
-	settings: MyPluginSettings;
 	private editor: Editor;
 
 	async onload() {
