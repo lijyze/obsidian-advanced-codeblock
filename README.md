@@ -1,6 +1,6 @@
 # Obsidian Advanced Codeblock
 
-This plugin allow you switch value of specific field within custom value set, so you won't make mistake.
+Add additioinal features to code blocks.
 
 ## Demo
 
