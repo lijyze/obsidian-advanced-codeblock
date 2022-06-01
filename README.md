@@ -4,7 +4,7 @@ This plugin allow you switch value of specific field within custom value set, so
 
 ## Demo
 
-![demo](https://raw.githubusercontent.com/lijyze/obsidian-advanced-codeblock/main/assets/demo.gif)
+![demo](https://raw.githubusercontent.com/lijyze/obsidian-advanced-codeblock/main/assets/demo.png)
 
 ## Feature
 
