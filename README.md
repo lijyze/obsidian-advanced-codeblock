@@ -1,4 +1,4 @@
-# Obsidian State Switcher
+# Obsidian Advanced Codeblock
 
 This plugin allow you switch value of specific field within custom value set, so you won't make mistake.
 
