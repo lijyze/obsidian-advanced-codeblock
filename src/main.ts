@@ -1,9 +1,7 @@
-import { Editor, Plugin } from "obsidian";
+import { Plugin } from "obsidian";
 import { commonCodeblockPostProcessor } from "./postProcessor";
 
-export default class MyPlugin extends Plugin {
-	private editor: Editor;
-
+export default class ObsidianAdvancedCodeblockPlugin extends Plugin {
 	async onload() {
 		console.log("Loading Advanced Codeblock");
 
