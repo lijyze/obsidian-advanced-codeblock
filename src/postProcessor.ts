@@ -21,7 +21,7 @@ function processParams(
 		?.editor.getLine(codeBlock.lineStart)
 		.slice(3);
 
-	// not specify anything
+	// not specify anything or no active view
 	if (!origin) return null;
 
 	const codeBlockInfo = origin.match(paramRegex);
