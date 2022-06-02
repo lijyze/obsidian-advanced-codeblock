@@ -18,11 +18,11 @@ All features won't apply universally, if you need any feature, you need to corre
 | Feature           | param    | description      |
 | ----------------- | -------- | ---------------- |
 | show line numbers | nums     |
-| highlight line    | {a, a-b} | brackets matters |
+| highlight line    | {a, b-c} | brackets matters |
 
 ## Notice
 
-- Line highlight won't get update if you only change params of blocks.
+- **Line highlight won't get update if you only change params of blocks.**
   
   Obsidian cache every section of artical, but it directly ignore anything follows the first space after ```` ```language ````. Which means if you only change params of a code block, obsidian will think nothing has been changed, so it won't call any post processor in preview view render process. 
 
