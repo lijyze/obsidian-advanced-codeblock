@@ -18,7 +18,7 @@ function processParams(
 
 	const origin = app.workspace
 		.getActiveViewOfType(MarkdownView)
-		.editor.getLine(codeBlock.lineStart)
+		?.editor.getLine(codeBlock.lineStart)
 		.slice(3);
 
 	// not specify anything
