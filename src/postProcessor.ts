@@ -1,5 +1,12 @@
-import { App, MarkdownPostProcessorContext, MarkdownView } from "obsidian";
+import {
+	App,
+	MarkdownPostProcessorContext,
+	MarkdownView,
+	Plugin,
+} from "obsidian";
 import "./extendPrism";
+
+type HandlerSet = (() => void)[];
 
 const paramRegex = /\{.+\}|\w+/g;
 const braceSurroundingRegex = /^{.+}$/;
@@ -57,36 +64,72 @@ function onMounted(element: HTMLElement, onAttachCallback: () => void) {
 	});
 }
 
+// handle line number
+function handleLineNumbers(
+	pre: HTMLPreElement,
+	params: string[],
+	initHandlers: HandlerSet,
+) {
+	if (!params.includes("nums")) return;
+
+	pre.classList.add("line-numbers");
+
+	const initLineNumbers = () => {
+		window.Prism.plugins.lineNumbers.resize(pre);
+	}
+
+	initHandlers.push(initLineNumbers);
+}
+
+function handleLineHighlight(
+	pre: HTMLPreElement,
+	params: string[],
+	initHandlers: HandlerSet,
+) {
+	const lineHightlightParamIdx = params.findIndex((param) =>
+		braceSurroundingRegex.test(param)
+	);
+	if (lineHightlightParamIdx === -1) return ;
+
+	pre.dataset.line = params[lineHightlightParamIdx].slice(1, -1);
+
+	const initLineHighlight = () => {
+		window.Prism.plugins.lineHighlight.highlightLines(pre)();
+	}
+
+	initHandlers.push(initLineHighlight);
+}
+
 export function commonCodeblockPostProcessor(
 	element: HTMLElement,
 	context: MarkdownPostProcessorContext,
-	app: App
+	app: App,
+	plugin: Plugin
 ) {
 	// check if processor should run
 	const processResult = processParams(element, context, app);
 	if (!processResult) return;
 
 	const { pre, params } = processResult;
+	const initHandlers: HandlerSet = [];
 
 	// add line numbers.
-	if (params.includes("nums")) {
-		pre.classList.add("line-numbers");
-		
-		onMounted(pre, () => {
-			window.Prism.plugins.lineNumbers.resize(pre)
-		})
-	}
+	handleLineNumbers(pre, params, initHandlers);
 
 	// add line highlight
-	const lineHightlightParamIdx = params.findIndex((param) =>
-		braceSurroundingRegex.test(param)
-	);
-	if (lineHightlightParamIdx >= 0) {
-		pre.dataset.line = params[lineHightlightParamIdx].slice(1, -1);
+	handleLineHighlight(pre, params, initHandlers);
 
-		onMounted(pre, () => {
-			window.Prism.plugins.lineHighlight.highlightLines(pre)();
+	// Reinit after mount
+	onMounted(pre, () => {
+		initHandlers.forEach((handler) => {
+			handler();
+		});
+	});
+
+	// Reinit after resize
+	plugin.registerEvent(app.workspace.on('resize', () => {
+		initHandlers.forEach((handler) => {
+			handler();
 		})
-	}
+	}))
 }
-
