@@ -69,7 +69,13 @@ export function commonCodeblockPostProcessor(
 	const { pre, params } = processResult;
 
 	// add line numbers.
-	if (params.includes("nums")) pre.classList.add("line-numbers");
+	if (params.includes("nums")) {
+		pre.classList.add("line-numbers");
+		
+		onMounted(pre, () => {
+			window.Prism.plugins.lineNumbers.resize(pre)
+		})
+	}
 
 	// add line highlight
 	const lineHightlightParamIdx = params.findIndex((param) =>
