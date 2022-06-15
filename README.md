@@ -22,13 +22,19 @@ All features won't apply universally, if you need any feature, you need to corre
 
 ## Notice
 
-- **Code block won't update if you only change params of blocks.**
+- **Code block won't update in preview mode if you only change params of blocks.**
   
   Obsidian cache every section of artical, but it directly ignore anything follows the first space after ```` ```language ````. Which means if you only change params of a code block, obsidian will think nothing has been changed, so it won't call any post processor in preview view render process. 
 
 ## Manually installing the plugin
 
 -   Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/obsidian-advanced-codeblock/`.
+
+## Releases
+
+### 1.1.0
+
+1. Funcitonalities are available in live-preview mode!
 
 ## Donating
 

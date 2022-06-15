@@ -46,6 +46,18 @@ pre[class*="language-"].line-numbers > code {
 	white-space: nowrap;
 }
 
+span.live-preview-codeblock-line-nums {
+	display: inline-block;
+	width: 3em;
+	margin-right: 1.8em;
+	color: #999;
+	border-right: 1px solid #999;
+	padding-right: 0.8em;
+	text-align: right;
+	white-space: nowrap;
+	user-select: none;
+}
+
 /* line-highlight */
 pre[data-line] {
 	position: relative;
@@ -124,4 +136,13 @@ pre[id].linkable-line-numbers span.line-numbers-rows > span:before {
 }
 pre[id].linkable-line-numbers span.line-numbers-rows > span:hover:before {
 	background-color: rgba(128, 128, 128, 0.2);
+}
+
+.HyperMD-codeblock-bg.live-preview-codeblock-highlight {
+	background: hsla(24, 20%, 50%, 0.08);
+	background: linear-gradient(
+		to right,
+		hsla(24, 20%, 50%, 0.1) 70%,
+		hsla(24, 20%, 50%, 0)
+	);	
 }

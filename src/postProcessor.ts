@@ -4,12 +4,10 @@ import {
 	MarkdownView,
 	Plugin,
 } from "obsidian";
+import { paramRegex, braceSurroundingRegex } from "./util";
 import "./extendPrism";
 
 type HandlerSet = (() => void)[];
-
-const paramRegex = /\{.+\}|\w+/g;
-const braceSurroundingRegex = /^{.+}$/;
 
 function processParams(
 	element: HTMLElement,
