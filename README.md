@@ -15,10 +15,10 @@ Add additioinal features to code blocks.
 
 All features won't apply universally, if you need any feature, you need to correctly specify params to specific code block. Params should be split by `' '`.
 
-| Feature           | param    | description      |
-| ----------------- | -------- | ---------------- |
+| Feature           | param    | description     |
+| ----------------- | -------- | --------------- |
 | show line numbers | nums     |
-| highlight line    | {a, b-c} | brackets matters |
+| highlight line    | {a, b-c} | brackets matter |
 
 ## Notice
 
