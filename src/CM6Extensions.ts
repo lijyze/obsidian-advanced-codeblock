@@ -103,8 +103,11 @@ export const livePreviewCM6Extension = ViewPlugin.fromClass(class {
                 })
 
                 // @ts-ignore
-                deco.startSide = builder.last.startSide;
-                deco.endSide = deco.startSide
+                if (builder.last?.startSide) {
+                  // @ts-ignore
+                  deco.startSide = builder.last.startSide;
+                  deco.endSide = deco.startSide
+                }
 
                 builder.add(line.from, line.from, deco);
               }
