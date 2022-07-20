@@ -1,7 +1,9 @@
 import { ViewPlugin, ViewUpdate, EditorView, DecorationSet, Decoration, WidgetType } from '@codemirror/view'
-import { RangeSetBuilder } from '@codemirror/rangeset'
-import { syntaxTree } from '@codemirror/language'
-import { lineClassNodeProp } from '@codemirror/stream-parser'
+// @ts-ignore
+import { RangeSetBuilder } from '@codemirror/state'
+// @ts-ignore
+import { syntaxTree, lineClassNodeProp } from '@codemirror/language'
+// import { lineClassNodeProp } from '@codemirror/stream-parser'
 import { braceSurroundingRegex, paramRegex } from './util'
 
 interface CodeblockInfo {
@@ -52,7 +54,8 @@ export const livePreviewCM6Extension = ViewPlugin.fromClass(class {
 
         tree.iterate({
           from, to,
-          enter: (type, from, to) => {
+          // @ts-ignore
+          enter: ({type, from, to}) => {
             const lineClasses = type.prop(lineClassNodeProp)
 
             if (!lineClasses) return ;
