@@ -46,7 +46,7 @@ export const livePreviewCM6Extension = ViewPlugin.fromClass(class {
       showLineNumbers: false,
       highlightLines: null,
     }
-    let idx = 1;
+    let startLineNum: number;
 
     for (const {from, to} of view.visibleRanges) {
       try {
@@ -68,9 +68,11 @@ export const livePreviewCM6Extension = ViewPlugin.fromClass(class {
 
             // reset data when found codeblock begin line.
             if (isCodeblockBegin) {
-              idx = 1;
-              const codeblockParams = view.state.doc.lineAt(from).text.match(paramRegex).slice(1);
+              const startLine = view.state.doc.lineAt(from);
+              const codeblockParams = startLine.text.match(paramRegex).slice(1);
               const highlightParam = codeblockParams.find((param) => braceSurroundingRegex.test(param))?.slice(1, -1);
+
+              startLineNum = startLine.number;
               codeblockInfo.showLineNumbers = false;
               codeblockInfo.highlightLines = null;
 
@@ -89,17 +91,21 @@ export const livePreviewCM6Extension = ViewPlugin.fromClass(class {
                 return [+line];
               });
             }
+
             if (!isCodeblockLine) return ;
             
+            const currentLineNum = view.state.doc.lineAt(from).number;
+
             if (codeblockInfo.showLineNumbers) {
               const deco = Decoration.widget({
-                widget: new LineNumberWidget(idx)
+                widget: new LineNumberWidget(currentLineNum - startLineNum),
+                side: -10000
               });
               builder.add(from, from, deco);
             }
 
             if (codeblockInfo.highlightLines) {
-              if (codeblockInfo.highlightLines.includes(idx)) {
+              if (codeblockInfo.highlightLines.includes(currentLineNum - startLineNum)) {
                 const line = view.state.doc.lineAt(from);
                 const deco = Decoration.line({
                   attributes: {class: 'live-preview-codeblock-highlight'}
@@ -115,8 +121,6 @@ export const livePreviewCM6Extension = ViewPlugin.fromClass(class {
                 builder.add(line.from, line.from, deco);
               }
             }
-
-            idx++;
           }
         })
       } catch (error) {
