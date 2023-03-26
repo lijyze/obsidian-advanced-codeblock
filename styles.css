@@ -143,5 +143,21 @@ pre[id].linkable-line-numbers span.line-numbers-rows > span:hover:before {
 		to right,
 		hsla(24, 20%, 50%, 0.1) 70%,
 		hsla(24, 20%, 50%, 0)
-	);	
+	);
+}
+.HyperMD-codeblock-bg.live-preview-codeblock-highlight.add-live-preview-codeblock-highlight {
+	background-color: #1d572d;
+}
+.HyperMD-codeblock-bg.live-preview-codeblock-highlight.add-live-preview-codeblock-highlight {
+	background-color: #301a1f;
+}
+.HyperMD-codeblock-bg.live-preview-codeblock-highlight.add-live-preview-codeblock-highlight {
+	background: var(--background-code);
+}
+.HyperMD-codeblock-bg.live-preview-codeblock-highlight.comment-live-preview-codeblock-highlight
+	> .cm-hmd-codeblock {
+	color: #b97dc9 !important;
+}
+.HyperMD-codeblock-bg.live-preview-codeblock-highlight.add-live-preview-codeblock-highlight {
+	background-color: #393d1b;
 }
