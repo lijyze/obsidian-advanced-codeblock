@@ -1,10 +1,17 @@
-import { ViewPlugin, ViewUpdate, EditorView, DecorationSet, Decoration, WidgetType } from '@codemirror/view'
+import {
+	ViewPlugin,
+	ViewUpdate,
+	EditorView,
+	DecorationSet,
+	Decoration,
+	WidgetType,
+} from "@codemirror/view";
 // @ts-ignore
-import { RangeSetBuilder } from '@codemirror/state'
+import { RangeSetBuilder } from "@codemirror/state";
 // @ts-ignore
-import { syntaxTree, lineClassNodeProp } from '@codemirror/language'
+import { syntaxTree, lineClassNodeProp } from "@codemirror/language";
 // import { lineClassNodeProp } from '@codemirror/stream-parser'
-import { braceSurroundingRegex, paramRegex } from './util'
+import { braceSurroundingRegex, paramRegex } from "./util";
 
 interface CodeblockInfo {
 	showLineNumbers: boolean;
@@ -17,13 +24,13 @@ class LineNumberWidget extends WidgetType {
 
 	constructor(idx: number) {
 		super();
-    this.idx = idx
+		this.idx = idx;
 	}
 
 	toDOM() {
-    const el = document.createElement('span');
-    el.className = 'live-preview-codeblock-line-nums';
-    el.textContent = '' + this.idx;
+		const el = document.createElement("span");
+		el.className = "live-preview-codeblock-line-nums";
+		el.textContent = "" + this.idx;
 		return el;
 	}
 }
@@ -52,7 +59,8 @@ export const livePreviewCM6Extension = ViewPlugin.fromClass(
 		}
 
 		update(update: ViewUpdate) {
-      if (update.docChanged || update.viewportChanged) this.decorations = this.buildDecorations(update.view);
+			if (update.docChanged || update.viewportChanged)
+				this.decorations = this.buildDecorations(update.view);
 		}
 
 		destory() {}
@@ -66,29 +74,42 @@ export const livePreviewCM6Extension = ViewPlugin.fromClass(
 			};
 			let startLineNum: number;
 
-    for (const {from, to} of view.visibleRanges) {
-			try {
-        const tree = syntaxTree(view.state)
+			for (const { from, to } of view.visibleRanges) {
+				try {
+					const tree = syntaxTree(view.state);
 
 					tree.iterate({
-            from, to,
+						from,
+						to,
 						// @ts-ignore
-            enter: ({type, from, to}) => {
-            const lineClasses = type.prop(lineClassNodeProp)
+						enter: ({ type, from, to }) => {
+							const lineClasses: any =
+								type.prop(lineClassNodeProp);
 
-            if (!lineClasses) return ;
-            const classes = new Set(lineClasses.split(' '));
-            const isCodeblockBegin = classes.has('HyperMD-codeblock-begin');
+							if (!lineClasses) return;
+							const classes = lineClasses
+								? new Set(lineClasses?.split(" "))
+								: null;
+							const isCodeblockBegin = classes.has(
+								"HyperMD-codeblock-begin"
+							);
 							const isCodeblockLine =
-              classes.has('HyperMD-codeblock-bg') 
-              && !classes.has('HyperMD-codeblock-begin')
-              && !classes.has('HyperMD-codeblock-end');
+								classes &&
+								classes.has("HyperMD-codeblock-bg") &&
+								!classes.has("HyperMD-codeblock-begin") &&
+								!classes.has("HyperMD-codeblock-end");
 
 							// reset data when found codeblock begin line.
 							if (isCodeblockBegin) {
 								const startLine = view.state.doc.lineAt(from);
-              const codeblockParams = startLine.text.match(paramRegex).slice(1);
-              const highlightParam = codeblockParams.find((param) => braceSurroundingRegex.test(param))?.slice(1, -1);
+								const codeblockParams = startLine.text
+									.match(paramRegex)
+									.slice(1);
+								const highlightParam = codeblockParams
+									.find((param) =>
+										braceSurroundingRegex.test(param)
+									)
+									?.slice(1, -1);
 
 								startLineNum = startLine.number;
 								codeblockInfo.showLineNumbers = false;
@@ -103,7 +124,7 @@ export const livePreviewCM6Extension = ViewPlugin.fromClass(
 											.split(",")
 											.reduce(
 												(
-													acc: [number[],string[]],
+													acc: [number[], string[]],
 													line: string
 												) => {
 													const type2 =
@@ -144,14 +165,17 @@ export const livePreviewCM6Extension = ViewPlugin.fromClass(
 								}
 							}
 
-              if (!isCodeblockLine) return ;
+							if (!isCodeblockLine) return;
 
-              const currentLineNum = view.state.doc.lineAt(from).number;
+							const currentLineNum =
+								view.state.doc.lineAt(from).number;
 
 							if (codeblockInfo.showLineNumbers) {
 								const deco = Decoration.widget({
-                  widget: new LineNumberWidget(currentLineNum - startLineNum),
-                  side: -10000
+									widget: new LineNumberWidget(
+										currentLineNum - startLineNum
+									),
+									side: -10000,
 								});
 								builder.add(from, from, deco);
 							}
@@ -183,16 +207,16 @@ export const livePreviewCM6Extension = ViewPlugin.fromClass(
 									if (builder.last?.startSide) {
 										// @ts-ignore
 										deco.startSide = builder.last.startSide;
-                    deco.endSide = deco.startSide
+										deco.endSide = deco.startSide;
 									}
 
 									builder.add(line.from, line.from, deco);
 								}
 							}
-            }
-          })
+						},
+					});
 				} catch (error) {
-          console.log(error)
+					console.log(error);
 				}
 			}
 
@@ -200,5 +224,6 @@ export const livePreviewCM6Extension = ViewPlugin.fromClass(
 		}
 	},
 	{
-    decorations: v => v.decorations
-})
+		decorations: (v) => v.decorations,
+	}
+);

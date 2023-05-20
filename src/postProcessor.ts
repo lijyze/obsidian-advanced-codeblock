@@ -66,7 +66,7 @@ function onMounted(element: HTMLElement, onAttachCallback: () => void) {
 function handleLineNumbers(
 	pre: HTMLPreElement,
 	params: string[],
-	initHandlers: HandlerSet,
+	initHandlers: HandlerSet
 ) {
 	if (!params.includes("nums")) return;
 
@@ -74,7 +74,7 @@ function handleLineNumbers(
 
 	const initLineNumbers = () => {
 		window.Prism.plugins.lineNumbers.resize(pre);
-	}
+	};
 
 	initHandlers.push(initLineNumbers);
 }
@@ -82,18 +82,18 @@ function handleLineNumbers(
 function handleLineHighlight(
 	pre: HTMLPreElement,
 	params: string[],
-	initHandlers: HandlerSet,
+	initHandlers: HandlerSet
 ) {
 	const lineHightlightParamIdx = params.findIndex((param) =>
 		braceSurroundingRegex.test(param)
 	);
-	if (lineHightlightParamIdx === -1) return ;
+	if (lineHightlightParamIdx === -1) return;
 
 	pre.dataset.line = params[lineHightlightParamIdx].slice(1, -1);
 
 	const initLineHighlight = () => {
 		window.Prism.plugins.lineHighlight.highlightLines(pre)();
-	}
+	};
 
 	initHandlers.push(initLineHighlight);
 }
@@ -125,9 +125,11 @@ export function commonCodeblockPostProcessor(
 	});
 
 	// Reinit after resize
-	plugin.registerEvent(app.workspace.on('resize', () => {
-		initHandlers.forEach((handler) => {
-			handler();
+	plugin.registerEvent(
+		app.workspace.on("resize", () => {
+			initHandlers.forEach((handler) => {
+				handler();
+			});
 		})
-	}))
+	);
 }
