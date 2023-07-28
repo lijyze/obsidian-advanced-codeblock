@@ -93,10 +93,6 @@ pre[data-line] {
 	white-space: pre;
 }
 
-code .line-highlight {
-	margin-top: 2em;
-}
-
 @media print {
 	.line-highlight {
 		/*
